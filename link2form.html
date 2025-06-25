@@ -1,35 +1,66 @@
-<!-- Materialize CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Solicitar Cotización</title>
 
-<!-- CTA Section -->
-<div class="section center-align" style="padding: 4rem 1rem;">
-  <h4 class="teal-text text-darken-3">Obtenga una Cotización Personalizada</h4>
-  <p class="grey-text">En solo un minuto, reciba una propuesta adaptada a sus necesidades.</p>
-  <a class="waves-effect waves-light btn-large modal-trigger teal darken-3" href="#quoteModal">
-    Solicitar Cotización
-  </a>
-</div>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
 
-<!-- Modal Structure -->
-<div id="quoteModal" class="modal">
-  <div class="modal-content" style="padding: 0;">
-    <iframe 
-      src="https://languagesandwich.github.io/quote-form/page.html"
-      style="width: 100%; height: 90vh; border: none;">
-    </iframe>
-  </div>
-  <div class="modal-footer">
-    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
-  </div>
-</div>
+    <style>
+      body {
+        background-image: url("https://images.unsplash.com/photo-1615799998603-7c6270a45196?q=80&w=2804&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
 
-<!-- Materialize JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      .cta-section {
+        padding: 4rem 1rem;
+        background: rgba(255, 255, 255, 0.75);
+        border-radius: 12px;
+        max-width: 600px;
+        margin: 10vh auto;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
 
-<!-- Modal Initialization -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var modals = document.querySelectorAll('.modal');
-    M.Modal.init(modals);
-  });
-</script>
+  <body>
+    <!-- CTA Section -->
+    <div class="cta-section center-align">
+      <h4 class="teal-text text-darken-3">Obtenga una Cotización Personalizada</h4>
+      <p class="grey-text">En solo un minuto, reciba una propuesta adaptada a sus necesidades.</p>
+      <a class="waves-effect waves-light btn-large modal-trigger teal darken-3" href="#quoteModal">
+        Solicitar Cotización
+      </a>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="quoteModal" class="modal">
+      <div class="modal-content" style="padding: 0;">
+        <iframe 
+          src="https://languagesandwich.github.io/quote-form/page.html"
+          style="width: 100%; height: 90vh; border: none;">
+        </iframe>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cerrar</a>
+      </div>
+    </div>
+
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- Modal Initialization -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var modals = document.querySelectorAll('.modal');
+        M.Modal.init(modals);
+      });
+    </script>
+  </body>
+</html>
