@@ -1,54 +1,204 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    M.FormSelect.init(document.querySelectorAll('select'));
-    M.Datepicker.init(document.querySelectorAll('.datepicker'), {
-      format: 'dd/mm/yyyy',
-      autoClose: true
-    });
-  });
-
-  document.getElementById("btn").addEventListener("click", doStuff);
-  document.getElementById("std_num").addEventListener("input", function () {
-    document.getElementById("slider-value").textContent = this.value;
-  });
-
-  function doStuff() {
-    const userInfo = {
-      nombre: document.getElementById("nombre").value,
-      apellido: document.getElementById("apellido").value,
-      company: document.getElementById("company").value,
-      email: document.getElementById("email").value,
-      telefono: document.getElementById("telefono").value,
-      hora_contacto: document.getElementById("hora_contacto").value,
-      cursos: Array.from(document.getElementById("cursos").selectedOptions).map(opt => opt.value),
-      fecha_inicio: document.getElementById("fecha_inicio").value,
-      std_num: document.getElementById("std_num").value,
-      comentarios: document.getElementById("comentarios").value,
-      checkbox: document.getElementById("terms").checked
-    };
-
-    fetch("https://script.google.com/macros/s/AKfycbyRfCwFzLXWtGCK9kuAbXye362WpyAKwLcqMzkfr_fiO28io8pm9hsQFu70jU2At2IE/exec", {
-      method: "POST",
-      body: JSON.stringify(userInfo),
-      headers: {
-        "Content-Type": "application/json"
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
+    <style>
+      body {
+        background-image: url("https://images.unsplash.com/photo-1615799998603-7c6270a45196?q=80&w=2804&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
       }
-    })
-    .then(response => {
-      if (!response.ok) throw new Error("Network response was not ok");
-      return response.text();
-    })
-    .then(data => {
-      M.toast({ html: '¡Formulario enviado exitosamente!', classes: 'rounded' });
-      document.querySelector("form").reset();
-      document.getElementById("slider-value").textContent = "1";
-      M.FormSelect.init(document.querySelectorAll('select'));
-    })
-    .catch(error => {
-      M.toast({ html: 'Error al enviar el formulario.', classes: 'rounded red' });
-      console.error("Error:", error);
-    });
-  }
-</script>
+
+      h1 {
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+      }
+
+      .form-row {
+        margin-bottom: 15px;
+      }
+
+      .cursos-label {
+        font-size: 1.5rem;
+      }
+
+      .custom-slider label {
+        font-weight: normal;
+        font-size: 1.1rem;
+      }
+
+      .custom-slider input[type=range]::-webkit-slider-thumb,
+      .custom-slider input[type=range]::-moz-range-thumb,
+      .custom-slider input[type=range]::-ms-thumb {
+        background-color: #004d40;
+      }
+
+      .custom-slider input[type=range]::-webkit-slider-runnable-track,
+      .custom-slider input[type=range]:focus::-webkit-slider-runnable-track {
+        background-color: #004d40;
+        height: 6px;
+      }
+
+      .slider-value {
+        font-weight: bold;
+        margin-left: 10px;
+      }
+
+      .form-container {
+        background: rgba(255, 255, 255, 0.40);
+        border-radius: 15px;
+        padding: 30px;
+        margin-top: 30px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container"> 
+      <div class="form-container z-depth-3">
+        <h1 class="teal-text text-darken-3"> Obtenga una Cotización:</h1>
+        <div class="row">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s6">
+                <input id="nombre" type="text" class="validate">
+                <label for="nombre">Nombre</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="apellido" type="text" class="validate">
+                <label for="apellido">Apellido</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="company" type="text" class="validate">
+                <label for="company">Nombre de su Compañía</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="email" type="email" class="validate">
+                <label for="email">Email</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="telefono" type="tel" class="validate">
+                <label for="telefono">Teléfono</label>
+              </div>
+              <div class="input-field col s6">
+                <select id="hora_contacto">
+                  <option value="" disabled selected>Elija una hora</option>
+                  <option value="manana">Mañana</option>
+                  <option value="tarde">Tarde</option>
+                  <option value="noche">Noche</option>
+                </select>
+                <label>Hora de contacto preferida</label>
+              </div>
+              <div class="input-field col s6 teal-text text-darken-3">
+                <select id="cursos" multiple>
+                  <option value="" disabled selected>Elija sus cursos</option>
+                  <option value="Inglés para comercios">Inglés para comercios</option>
+                  <option value="Inglés para viajeros">Inglés para viajeros</option>
+                  <option value="Inglés para Ingenieros">Inglés para Ingenieros</option>
+                  <option value="Certificación Trinity">Certificación Trinity College</option>
+                  <option value="Cambridge">Certificación Cambridge</option>
+                  <option value="Alemán">Alemán</option>
+                  <option value="Portugués">Portugués</option>
+                  <option value="Italiano">Italiano</option>
+                  <option value="Español">Español</option>
+                  <option value="Japonés">Japonés</option>
+                </select>
+                <label class="cursos-label">Cursos</label>
+              </div>
+              <div class="input-field col s6">
+                <input type="text" class="datepicker" id="fecha_inicio">
+                <label for="fecha_inicio">Fecha estimada de inicio</label>
+              </div>
+            </div>
+
+            <p class="range-field custom-slider">
+              <label for="std_num">¿Cuántos empleados desea inscribir?
+                <span id="slider-value" class="slider-value">1</span>
+              </label>
+              <input type="range" id="std_num" min="1" max="50" value="1" />
+            </p>
+
+            <div class="input-field col s12">
+              <textarea id="comentarios" class="materialize-textarea"></textarea>
+              <label for="comentarios">Comentarios adicionales</label>
+            </div>
+
+            <p>
+              <label>
+                <input type="checkbox" id="terms" />
+                <span>Acepto recibir comunicaciones comerciales</span>
+              </label>
+            </p>
+
+            <div class="row">
+              <button id="btn" type="button" class="waves-effect waves-light btn-large teal darken-3">
+                <i class="material-icons right">attach_money</i>Reciba el costo
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        M.FormSelect.init(document.querySelectorAll('select'));
+        M.Datepicker.init(document.querySelectorAll('.datepicker'), {
+          format: 'dd/mm/yyyy',
+          autoClose: true
+        });
+
+        document.getElementById("btn").addEventListener("click", doStuff);
+        document.getElementById("std_num").addEventListener("input", function () {
+          document.getElementById("slider-value").textContent = this.value;
+        });
+      });
+
+      function doStuff() {
+        const userInfo = {
+          nombre: document.getElementById("nombre").value,
+          apellido: document.getElementById("apellido").value,
+          company: document.getElementById("company").value,
+          email: document.getElementById("email").value,
+          telefono: document.getElementById("telefono").value,
+          hora_contacto: document.getElementById("hora_contacto").value,
+          cursos: Array.from(document.getElementById("cursos").selectedOptions).map(opt => opt.value),
+          fecha_inicio: document.getElementById("fecha_inicio").value,
+          std_num: document.getElementById("std_num").value,
+          comentarios: document.getElementById("comentarios").value,
+          terms: document.getElementById("terms").checked
+        };
+
+        fetch("https://script.google.com/macros/s/YOUR_WEB_APP_URL/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(userInfo)
+        }).then(() => {
+          M.toast({ html: '¡Formulario enviado exitosamente!', classes: 'rounded' });
+          document.querySelector("form").reset();
+          document.getElementById("slider-value").textContent = "1";
+          M.FormSelect.init(document.querySelectorAll('select'));
+        }).catch((err) => {
+          console.error("Error al enviar:", err);
+        });
+      }
+    </script>
+  </body>
+</html>
